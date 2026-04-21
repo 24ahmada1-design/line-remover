@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Line Remover</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #121212; color: #e0e0e0; }
+        textarea { width: 100%; height: 200px; margin-bottom: 15px; padding: 12px; background: #1e1e1e; color: #fff; border: 1px solid #333; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"] { width: 100%; padding: 12px; margin-bottom: 15px; background: #1e1e1e; color: #fff; border: 1px solid #333; border-radius: 4px; box-sizing: border-box; }
+        button { padding: 12px 24px; background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        .container { max-width: 900px; margin: auto; }
+        h2 { color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Document Line Remover (Enhanced)</h2>
+    
+    <label><strong>Text/Paragraph to Remove:</strong></label>
+    <textarea id="targetLine" style="height: 80px;" placeholder="Paste the specific block you want to disappear..."></textarea>
+
+    <label><strong>Paste Full Document Here:</strong></label>
+    <textarea id="sourceDoc" placeholder="Paste your full content here..."></textarea>
+
+    <button onclick="removeLines()">Remove All Instances</button>
+
+    <div style="margin-top: 25px;">
+        <strong>Result:</strong>
+        <textarea id="resultDoc" readonly placeholder="Result will appear here..."></textarea>
+    </div>
+</div>
+
+<script>
+    function removeLines() {
+        let target = document.getElementById('targetLine').value;
+        const source = document.getElementById('sourceDoc').value;
+
+        if (!target.trim()) {
+            alert("Please enter text to remove.");
+            return;
+        }
+
+        // 1. Escape special characters so they don't break the search
+        // 2. Use 'g' flag for Global (all instances)
+        // 3. Use 'm' flag for Multiline
+        const escapedTarget = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedTarget, 'g');
+
+        const cleanedText = source.replace(regex, '');
+        
+        document.getElementById('resultDoc').value = cleanedText.trim();
+        
+        if (source === document.getElementById('resultDoc').value) {
+            alert("No exact match found. Check if there are extra spaces or hidden characters in the source text.");
+        }
+    }
+</script>
+
+</body>
+</html>
